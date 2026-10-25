@@ -1,0 +1,6 @@
+{
+  "name": "Creator Pro Recorder",
+  "description": "Interactive UI Design Selector and professional Android screen recording studio interface.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
