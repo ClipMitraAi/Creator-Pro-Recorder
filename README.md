@@ -42,16 +42,37 @@ git push origin v1.0.0
 ```
 GitHub Actions will automatically compile the APK and publish a **GitHub Release** at `https://github.com/<your-username>/<your-repo>/releases` with the `CreatorProRecorder-v1.0.0.apk` file attached.
 
-### Option 3: Build Locally via Android Studio
-1. Open the `/android` folder in **Android Studio**.
-2. Let Gradle sync.
-3. Run or build the project:
+### Option 3: Build Locally via Android Studio or Terminal
+1. Configure your Android SDK location in `android/local.properties`:
+   - On Windows: `sdk.dir=C:\\Users\\<Username>\\AppData\\Local\\Android\\Sdk`
+   - On Mac: `sdk.dir=/Users/<Username>/Library/Android/sdk`
+   - On Linux: `sdk.dir=/home/<Username>/Android/Sdk`
+   *(Refer to `android/local.properties.example` for details)*
+
+2. Open the `/android` folder in **Android Studio** or build via terminal:
    ```bash
    cd android
+   chmod +x gradlew
    ./gradlew assembleDebug
    ```
-4. Output APK location:
+3. Output APK location:
    `android/app/build/outputs/apk/debug/app-debug.apk`
+
+---
+
+## 🔧 Android SDK Requirements & Troubleshooting
+
+If you encounter issues building the APK:
+
+1. **Missing `sdk.dir` Error:**
+   - Solution: Create `android/local.properties` with `sdk.dir=/path/to/your/android/sdk`. In GitHub Actions, the workflow automatically generates this step for you.
+2. **SDK Licenses Not Accepted:**
+   - Run: `yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses`
+3. **Target SDK & Tools:**
+   - Compile SDK: `35` (Android 15)
+   - Min SDK: `26` (Android 8.0 Oreo+)
+   - JDK Requirement: **Java 17 (OpenJDK / Temurin)**
+   - Gradle Version: **8.7** with Android Gradle Plugin (AGP) **8.7.2**
 
 ---
 
