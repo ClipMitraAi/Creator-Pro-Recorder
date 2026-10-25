@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { useAdMob, ADMOB_UNITS } from '../../context/AdMobContext';
-import { AdMobBanner } from '../ads/AdMobBanner';
 import { 
   Palette, 
   Cpu, 
@@ -16,15 +14,14 @@ import {
   RotateCcw,
   ChevronRight,
   ShieldCheck,
-  Layout,
-  Gift
+  Lock
 } from 'lucide-react';
 import { VideoResolution, VideoFPS, VideoBitrate, VideoEncoder } from '../../types/recorder';
 import { AndroidCodeModal } from '../AndroidCodeModal';
+import { PrivacyPolicyModal } from '../PrivacyPolicyModal';
 
 export const GeneralSettingsScreen: React.FC = () => {
   const { theme, setPreviewMode, showToast, resetToDefault, isCustomized } = useTheme();
-  const { setShowAdMobCodeModal, triggerInterstitial, triggerRewarded } = useAdMob();
 
   const [resolution, setResolution] = useState<VideoResolution>('1080p');
   const [fps, setFps] = useState<VideoFPS>(60);
@@ -36,6 +33,7 @@ export const GeneralSettingsScreen: React.FC = () => {
   const [floatingControls, setFloatingControls] = useState(true);
   const [storageTarget, setStorageTarget] = useState<'internal' | 'sdcard'>('internal');
   const [showAndroidCode, setShowAndroidCode] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   return (
     <div className="flex-1 p-4 pb-24 space-y-4">
@@ -335,9 +333,10 @@ export const GeneralSettingsScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* ADMOB INTEGRATION & ADS STUDIO */}
+      {/* PRIVACY POLICY & DATA SECURITY */}
       <div 
-        className="p-4 border space-y-3"
+        className="p-4 border space-y-2 cursor-pointer transition-all hover:scale-[1.01]"
+        onClick={() => setShowPrivacyPolicy(true)}
         style={{
           backgroundColor: theme.surfaceColor,
           borderColor: theme.borderColor,
@@ -346,64 +345,16 @@ export const GeneralSettingsScreen: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
-              <Layout className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold" style={{ color: theme.textColor }}>
-                Google AdMob Integration
-              </h4>
-              <p className="text-[10px]" style={{ color: theme.textMutedColor }}>
-                3 Configured Ad Units Ready for Android
-              </p>
-            </div>
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <h4 className="text-xs font-bold" style={{ color: theme.textColor }}>
+              Privacy Policy & Security
+            </h4>
           </div>
-
-          <button
-            onClick={() => setShowAdMobCodeModal(true)}
-            className="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 shadow transition-transform active:scale-95"
-          >
-            AdMob Hub
-          </button>
+          <ChevronRight className="w-4 h-4" style={{ color: theme.textMutedColor }} />
         </div>
-
-        <div className="space-y-1.5 text-[11px] font-mono">
-          <div className="flex justify-between p-1.5 rounded bg-black/20">
-            <span style={{ color: theme.textMutedColor }}>Banner:</span>
-            <span className="text-emerald-400 truncate max-w-[170px]" title={ADMOB_UNITS.BANNER}>
-              ...6300978111
-            </span>
-          </div>
-          <div className="flex justify-between p-1.5 rounded bg-black/20">
-            <span style={{ color: theme.textMutedColor }}>Interstitial:</span>
-            <span className="text-cyan-400 truncate max-w-[170px]" title={ADMOB_UNITS.INTERSTITIAL}>
-              ...1033173712
-            </span>
-          </div>
-          <div className="flex justify-between p-1.5 rounded bg-black/20">
-            <span style={{ color: theme.textMutedColor }}>Rewarded:</span>
-            <span className="text-amber-400 truncate max-w-[170px]" title={ADMOB_UNITS.REWARDED}>
-              ...5224354917
-            </span>
-          </div>
-        </div>
-
-        {/* Quick test buttons */}
-        <div className="grid grid-cols-2 gap-2 pt-1">
-          <button
-            onClick={() => triggerInterstitial()}
-            className="py-1.5 text-[11px] font-semibold rounded-lg bg-blue-600/20 border border-blue-500/40 text-blue-400 hover:bg-blue-600/30 transition-all"
-          >
-            Test Interstitial
-          </button>
-          <button
-            onClick={() => triggerRewarded()}
-            className="py-1.5 text-[11px] font-semibold rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-400 hover:bg-amber-500/30 transition-all flex items-center justify-center gap-1"
-          >
-            <Gift className="w-3 h-3" />
-            <span>Test Rewarded</span>
-          </button>
-        </div>
+        <p className="text-[11px]" style={{ color: theme.textMutedColor }}>
+          100% on-device recording. No ads, no background tracking, zero data collection.
+        </p>
       </div>
 
       {/* NATIVE ANDROID CODE & ARCHITECTURE CTA */}
@@ -445,12 +396,14 @@ export const GeneralSettingsScreen: React.FC = () => {
         </button>
       </div>
 
-      {/* ADMOB TEST BANNER */}
-      <AdMobBanner />
-
       {/* Android Code Modal */}
       {showAndroidCode && (
         <AndroidCodeModal onClose={() => setShowAndroidCode(false)} />
+      )}
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyPolicy && (
+        <PrivacyPolicyModal onClose={() => setShowPrivacyPolicy(false)} />
       )}
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { AdMobBanner } from '../ads/AdMobBanner';
 import { 
   ArrowLeft, 
   Search, 
@@ -264,9 +263,6 @@ export const RecordingsGalleryScreen: React.FC = () => {
           ))
         )}
       </div>
-
-      {/* ADMOB TEST BANNER: ca-app-pub-3940256099942544/6300978111 */}
-      <AdMobBanner />
 
       {/* FULL VIDEO PLAYER MODAL */}
       {activeVideo && (

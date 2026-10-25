@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { useAdMob } from '../../context/AdMobContext';
 import { 
   Square, 
   Pause, 
@@ -19,7 +18,6 @@ import {
 
 export const FullScreenRecordScreen: React.FC = () => {
   const { theme, setCurrentScreen, showToast } = useTheme();
-  const { triggerInterstitial } = useAdMob();
 
   // Recording timer simulation
   const [seconds, setSeconds] = useState(142); // 02:22
@@ -356,11 +354,7 @@ export const FullScreenRecordScreen: React.FC = () => {
             {/* Actions */}
             <div className="space-y-2 pt-1">
               <button
-                onClick={() => {
-                  triggerInterstitial(() => {
-                    setCurrentScreen('editor');
-                  });
-                }}
+                onClick={() => setCurrentScreen('editor')}
                 className="w-full py-2.5 text-xs font-bold flex items-center justify-center gap-2 rounded-xl text-white shadow-lg transition-transform active:scale-98"
                 style={{
                   backgroundColor: theme.primaryColor,
@@ -368,15 +362,11 @@ export const FullScreenRecordScreen: React.FC = () => {
                 }}
               >
                 <Sliders className="w-4 h-4" />
-                <span>Open in Video Editor (AdMob Interstitial)</span>
+                <span>Open in Video Editor</span>
               </button>
 
               <button
-                onClick={() => {
-                  triggerInterstitial(() => {
-                    setCurrentScreen('recordings');
-                  });
-                }}
+                onClick={() => setCurrentScreen('recordings')}
                 className="w-full py-2 text-xs font-semibold flex items-center justify-center gap-2 rounded-xl border transition-all"
                 style={{
                   borderColor: theme.borderColor,

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-import { AdMobProvider, useAdMob, ADMOB_UNITS } from './context/AdMobContext';
 import { ThemeGallery } from './components/ThemeGallery';
 import { CustomDesignEditor } from './components/CustomDesignEditor';
 import { DeviceFrame } from './components/DeviceFrame';
@@ -13,9 +12,7 @@ import { FacecamSettingsScreen } from './components/screens/FacecamSettingsScree
 import { RecordingsGalleryScreen } from './components/screens/RecordingsGalleryScreen';
 import { VideoEditorScreen } from './components/screens/VideoEditorScreen';
 import { GeneralSettingsScreen } from './components/screens/GeneralSettingsScreen';
-import { AdMobInterstitialModal } from './components/ads/AdMobInterstitialModal';
-import { AdMobRewardedModal } from './components/ads/AdMobRewardedModal';
-import { AdMobSettingsModal } from './components/ads/AdMobSettingsModal';
+import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { 
   Palette, 
   Smartphone, 
@@ -23,10 +20,7 @@ import {
   Sliders, 
   CheckCircle, 
   X,
-  Layers,
-  ArrowLeft,
-  Layout,
-  Gift
+  ShieldCheck
 } from 'lucide-react';
 
 const MainAppContent: React.FC = () => {
@@ -42,12 +36,7 @@ const MainAppContent: React.FC = () => {
     setDeviceFrameEnabled 
   } = useTheme();
 
-  const {
-    showAdMobCodeModal,
-    setShowAdMobCodeModal,
-    isVipUnlocked,
-    triggerRewarded
-  } = useAdMob();
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   // Mode 1: UI Design Gallery (6 distinct themes)
   if (previewMode === 'studio') {
@@ -66,10 +55,7 @@ const MainAppContent: React.FC = () => {
           </div>
         )}
 
-        {/* Global AdMob Modals */}
-        <AdMobInterstitialModal />
-        <AdMobRewardedModal />
-        {showAdMobCodeModal && <AdMobSettingsModal onClose={() => setShowAdMobCodeModal(false)} />}
+        {showPrivacyPolicy && <PrivacyPolicyModal onClose={() => setShowPrivacyPolicy(false)} />}
       </div>
     );
   }
@@ -91,10 +77,7 @@ const MainAppContent: React.FC = () => {
           </div>
         )}
 
-        {/* Global AdMob Modals */}
-        <AdMobInterstitialModal />
-        <AdMobRewardedModal />
-        {showAdMobCodeModal && <AdMobSettingsModal onClose={() => setShowAdMobCodeModal(false)} />}
+        {showPrivacyPolicy && <PrivacyPolicyModal onClose={() => setShowPrivacyPolicy(false)} />}
       </div>
     );
   }
@@ -138,24 +121,18 @@ const MainAppContent: React.FC = () => {
           >
             {theme.name}
           </span>
-          {isVipUnlocked && (
-            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
-              <Gift className="w-3 h-3" />
-              VIP UNLOCKED
-            </span>
-          )}
         </div>
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
-          {/* AdMob Ads Hub Button */}
+          {/* Privacy Policy Button */}
           <button
-            onClick={() => setShowAdMobCodeModal(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 transition-colors"
-            title="Google AdMob Integration Hub (Banner, Interstitial, Rewarded)"
+            onClick={() => setShowPrivacyPolicy(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
+            title="Privacy Policy"
           >
-            <Layout className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden md:inline">AdMob Ads</span>
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="hidden md:inline">Privacy</span>
           </button>
 
           {/* Toggle Device Chassis */}
@@ -207,10 +184,8 @@ const MainAppContent: React.FC = () => {
         </div>
       )}
 
-      {/* Global AdMob Modals */}
-      <AdMobInterstitialModal />
-      <AdMobRewardedModal />
-      {showAdMobCodeModal && <AdMobSettingsModal onClose={() => setShowAdMobCodeModal(false)} />}
+      {/* Privacy Policy Modal */}
+      {showPrivacyPolicy && <PrivacyPolicyModal onClose={() => setShowPrivacyPolicy(false)} />}
     </div>
   );
 };
@@ -218,9 +193,7 @@ const MainAppContent: React.FC = () => {
 export default function App() {
   return (
     <ThemeProvider>
-      <AdMobProvider>
-        <MainAppContent />
-      </AdMobProvider>
+      <MainAppContent />
     </ThemeProvider>
   );
 }

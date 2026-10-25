@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { useAdMob } from '../../context/AdMobContext';
 import { 
   ArrowLeft, 
   Play, 
@@ -19,7 +18,6 @@ import { SAMPLE_RECORDINGS } from '../../data/sampleRecordings';
 
 export const VideoEditorScreen: React.FC = () => {
   const { theme, setCurrentScreen, showToast } = useTheme();
-  const { triggerInterstitial } = useAdMob();
 
   // Active video
   const activeClip = SAMPLE_RECORDINGS[0];
@@ -387,10 +385,8 @@ export const VideoEditorScreen: React.FC = () => {
                   <button
                     onClick={() => {
                       setIsExporting(false);
-                      triggerInterstitial(() => {
-                        showToast('Saved to Creator Pro Recordings Library');
-                        setCurrentScreen('recordings');
-                      });
+                      showToast('Saved to Creator Pro Recordings Library');
+                      setCurrentScreen('recordings');
                     }}
                     className="flex-1 py-2 text-xs font-bold text-white rounded-xl shadow transition-transform active:scale-95"
                     style={{

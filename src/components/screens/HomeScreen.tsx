@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { useAdMob } from '../../context/AdMobContext';
-import { AdMobBanner } from '../ads/AdMobBanner';
 import { 
   Maximize2, 
   Crop, 
@@ -14,15 +12,12 @@ import {
   ChevronRight, 
   Volume2, 
   Check, 
-  HandMetal,
-  Gift,
-  Tv
+  HandMetal 
 } from 'lucide-react';
 import { SAMPLE_RECORDINGS } from '../../data/sampleRecordings';
 
 export const HomeScreen: React.FC = () => {
   const { theme, setCurrentScreen, setPreviewMode, activeThemeId } = useTheme();
-  const { triggerRewarded, isVipUnlocked } = useAdMob();
   
   // Quick toggles state
   const [micActive, setMicActive] = useState(true);
@@ -534,48 +529,6 @@ export const HomeScreen: React.FC = () => {
           ))}
         </div>
       </div>
-
-      {/* REWARDED AD PROMO: Unlock VIP 4K 120fps */}
-      <div 
-        className="p-3.5 rounded-xl border flex items-center justify-between gap-3 transition-all"
-        style={{
-          backgroundColor: isVipUnlocked ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.1)',
-          borderColor: isVipUnlocked ? '#10b981' : '#f59e0b',
-        }}
-      >
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div 
-            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-            style={{
-              backgroundColor: isVipUnlocked ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
-              color: isVipUnlocked ? '#10b981' : '#f59e0b',
-            }}
-          >
-            <Gift className="w-4 h-4" />
-          </div>
-          <div className="min-w-0">
-            <h4 className="text-xs font-bold truncate text-white">
-              {isVipUnlocked ? 'VIP Pro Active (24h Pass)' : 'Unlock 4K 120FPS & Pro Audio'}
-            </h4>
-            <p className="text-[10px] text-neutral-400 truncate">
-              {isVipUnlocked ? 'All watermark-free pro features unlocked' : 'Watch a quick 10s Rewarded Ad'}
-            </p>
-          </div>
-        </div>
-
-        <button
-          onClick={() => triggerRewarded()}
-          className="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-950 shrink-0 transition-transform active:scale-95 shadow"
-          style={{
-            backgroundColor: isVipUnlocked ? '#10b981' : '#f59e0b',
-          }}
-        >
-          {isVipUnlocked ? 'Extend' : 'Watch Ad'}
-        </button>
-      </div>
-
-      {/* ADMOB TEST BANNER: ca-app-pub-3940256099942544/6300978111 */}
-      <AdMobBanner />
     </div>
   );
 };
